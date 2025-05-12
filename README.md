@@ -1,4 +1,4 @@
-# 🗂️ EU Documents PDF Scraper (Chrome Extension)
+# 🗂️ Automated Download of EP Plenary Amendments
 
 <img width="640" alt="image" src="https://github.com/user-attachments/assets/ac58f6e0-f5f5-47a4-b92b-6e729462b3c6" />
 
