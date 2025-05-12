@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "PDF Link Opener for the EP",
+    "version": "1.2",
+    "description": "An extension to open or download all Amendments of a European Parliament Report in a PDF file.",
+    "icons": {
+        "16": "icon.png",
+        "48": "icon.png",
+        "128": "icon.png"
+    },
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": "icon.png"
+    },
+    "permissions": ["activeTab", "storage"],
+    "host_permissions": ["https://www.europarl.europa.eu/*"]
+  }
