@@ -18,7 +18,10 @@ A simple and powerful Chrome Extension that allows you to extract and download a
 - ⚠️ **Warning popup** if more than 5 documents are to be processed – user must confirm
 - 💾 Filter checkbox state is stored locally
 ---
+An Example Usage can be seen here: 
+https://github.com/user-attachments/assets/7640db70-7ace-4b90-abe7-8571c1d9ad9b
 
+Video
 ## 🛠️ Installation
 
 Add the Extension to your Chrome Browser with this Link: 
