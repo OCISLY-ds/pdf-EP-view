@@ -14,7 +14,7 @@ A simple and powerful Chrome Extension that allows you to extract and download a
 - The second Option is to use the current Tab
   - Note: This feature will only work on [the official EP Plenary Session Website](https://www.europarl.europa.eu/plenary/en/home.html)
 - 📄 Scrapes and opens or downloads all PDF documents found on that page
-- ✅ Optional filter: Download the Report PDF also
+- ✅ Optional filter: Download the Reports (eg everything + the Amendments) 
 - ⚠️ **Warning popup** if more than 5 documents are to be processed – user must confirm
 - 💾 Filter checkbox state is stored locally
 ---
