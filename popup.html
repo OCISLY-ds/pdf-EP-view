@@ -15,7 +15,7 @@
       justify-content: space-between;
       align-items: center;
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
+      font-family: 'Montserrat', Arial, sans-serif;
       background: linear-gradient(to bottom, #f0f8ff, #e6e6fa);
       color: #333;
     }
@@ -81,22 +81,88 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
+    .info-box {
+      margin-left: 5px;
+      vertical-align: middle;
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      color: #333;
+      font-size: 14px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .info-box:hover {
+      background-color: #f1f1f1;
+    }
+
+    .github-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 5px;
+      margin-bottom: 10px;
+      vertical-align: middle;
+    }
+
+    .info-container {
+      position: absolute;
+      bottom: 40px;
+      right: 10px;
+      display: flex;
+      gap: 0px;
+      z-index: 1000;
+    }
+
   </style>
 </head>
 <body>
   <div>
     <a href="https://partei-des-fortschritts.de/" target="_blank" style="display: flex; align-items: center;">
-      <img src="icon.png" alt="Extension Icon" style="width: 75px; height: 50px; margin-bottom: 10px;">
-      <span style="font-size: 30px; color: black; margin: 0 10px;">X</span>
-      <span style="font-size: 50px; margin-left: 10px; margin-bottom: 10px;margin-top: 15px;">  🇪🇺</span>
+      <img src="icon.png" alt="Extension Icon" style="width: 75px; height: 50px;">
+      <span style="font-size: 30px; color: black; margin-top: 10px;">X</span>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg" alt="EU Flag" style="width:50px; height:auto; margin-left:10px;">
     </a>
     <div>
     </div>
   </div>
-  <input type="text" id="urlInput" placeholder="Enter URL here...">
-  <div style="display: flex; align-items: center; margin-bottom: 10px;">
-    <input type="checkbox" id="filterCheckbox" style="margin-right: 10px; transform: scale(1.5);">
-    <label for="filterCheckbox" style="font-size: 16px; white-space: nowrap;">Download Reports</label>
+  <input type="text" id="urlInput" placeholder="Enter URL here..." class="url-input">
+  <div class="controls-container">
+    <div class="checkbox-group">
+      <input type="checkbox" id="filterCheckbox" class="filter-checkbox">
+      <label for="filterCheckbox" class="filter-label">Download Reports</label>
+    </div>
+    <div class="language-group">
+      <label for="languageSelect" class="language-label">Output language:</label>
+      <select id="languageSelect" class="language-select">
+        <option value="BG">🇧🇬 Bulgarian</option>
+        <option value="CS">🇨🇿 Czech</option>
+        <option value="DA">🇩🇰 Danish</option>
+        <option value="DE" selected>🇩🇪 German</option>
+        <option value="EL">🇬🇷 Greek</option>
+        <option value="EN">🇬🇧 English</option>
+        <option value="ES">🇪🇸 Spanish</option>
+        <option value="ET">🇪🇪 Estonian</option>
+        <option value="FI">🇫🇮 Finnish</option>
+        <option value="FR">🇫🇷 French</option>
+        <option value="GA">🇮🇪 Irish</option>
+        <option value="HR">🇭🇷 Croatian</option>
+        <option value="HU">🇭🇺 Hungarian</option>
+        <option value="IT">🇮🇹 Italian</option>
+        <option value="LT">🇱🇹 Lithuanian</option>
+        <option value="LV">🇱🇻 Latvian</option>
+        <option value="MT">🇲🇹 Maltese</option>
+        <option value="NL">🇳🇱 Dutch</option>
+        <option value="PL">🇵🇱 Polish</option>
+        <option value="PT">🇵🇹 Portuguese</option>
+        <option value="RO">🇷🇴 Romanian</option>
+        <option value="SK">🇸🇰 Slovak</option>
+        <option value="SL">🇸🇮 Slovenian</option>
+        <option value="SV">🇸🇪 Swedish</option>
+      </select>
+    </div>
   </div>
   <div style="display: flex; justify-content: space-between; width: 100%; max-width: 450px;">
     <button id="fetchButton" style="width: 48%;">Open all PDFs</button>
@@ -113,10 +179,15 @@
         <button id="proceedButton" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 14px; cursor: pointer;">Proceed</button>
     </div>
   </div>
-  <footer style="margin-top: 20px; font-size: 12px; color: #666; text-align: right;">
+  <footer style="margin-top: 20px; font-size: 12px; color: #666; text-align: center;">
     Made with 🧡 in the EU 🇪🇺
-    <span id="extensionVersion" style="margin-left: 10px;">Version: Loading...</span>
   </footer>
+  <div class="info-container">
+    <a href="https://github.com/OCISLY-ds/pdf-EP-view" target="_blank" class="info-box">
+      <img src="github-mark.png" alt="GitHub" class="github-icon"> GitHub
+    </a>
+    <span id="extensionVersion" class="info-box">Version: Loading...</span>
+  </div>
   <script src="popup.js"></script>
 </body>
 </html>

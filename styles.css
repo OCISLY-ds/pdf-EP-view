@@ -1,3 +1,16 @@
+/* Import Montserrat font */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('Montserrat-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* Global font settings */
+* {
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -8,7 +21,7 @@ body {
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Montserrat', Arial, sans-serif;
   background: linear-gradient(to bottom, #f0f8ff, #e6e6fa);
   color: #333;
 }
@@ -21,6 +34,7 @@ input {
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Montserrat', Arial, sans-serif;
 }
 
 button {
@@ -37,6 +51,8 @@ button {
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 500;
 }
 
 button:hover {
@@ -226,4 +242,129 @@ a div {
     padding: 5px 10px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style für Box um Versions-Info und GitHub-Link */
+.info-box {
+  display: inline-block;
+  background-color: #e6e6fa;
+  color: #333;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 5px;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 400;
+}
+
+/* Container für GitHub-Link und Version unten rechts */
+.info-container {
+  position: absolute;
+  bottom: 50px;
+  right: 10px;
+  display: flex;
+  gap: 5px;
+}
+
+/* Styles for popup.html elements */
+.header-link {
+  display: flex;
+  align-items: center;
+}
+.logo-image {
+  width: 75px;
+  height: 50px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+.header-title {
+  font-size: 30px;
+  color: black;
+  margin-top: 10px;
+}
+.eu-flag {
+  width: 50px;
+  height: auto;
+  margin-left: 10px;
+}
+.controls-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 20px;
+  width: 100%;
+  max-width: 450px;
+}
+.checkbox-group {
+  display: flex;
+  align-items: center;
+}
+.filter-checkbox {
+  margin-right: 10px;
+  transform: scale(1.5);
+}
+.filter-label {
+  font-size: 16px;
+  white-space: nowrap;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 400;
+}
+.language-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.language-label {
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+.language-select {
+  padding: 8px 12px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease;
+  min-width: 80px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 400;
+}
+.language-select:hover {
+  border-color: rgb(242, 170, 60);
+}
+.language-select:focus {
+  outline: none;
+  border-color: rgb(242, 170, 60);
+  box-shadow: 0 0 0 2px rgba(242, 170, 60, 0.2);
+}
+.language-select option {
+  font-size: 16px;
+  padding: 5px 10px;
+  white-space: nowrap;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 400;
+}
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 450px;
+}
+.button-half {
+  width: 48%;
+}
+.footer {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #666;
+  text-align: center;
 }
