@@ -274,7 +274,7 @@ a div {
 /* Container für GitHub-Link und Version unten rechts */
 .info-container {
   position: absolute;
-  bottom: 50px;
+  bottom: 20px;
   right: 10px;
   display: flex;
   gap: 5px;
@@ -327,6 +327,7 @@ a div {
 .filter-checkbox {
   margin-right: 10px;
   transform: scale(1.5);
+  box-shadow: none;
 }
 .filter-label {
   font-size: 14px;

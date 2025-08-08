@@ -16,5 +16,18 @@
       "default_icon": "icon.png"
     },
     "permissions": ["activeTab", "storage"],
-    "host_permissions": ["https://www.europarl.europa.eu/*"]
+    "host_permissions": ["https://www.europarl.europa.eu/*"],
+    "content_scripts": [
+      {
+        "matches": [
+          "https://www.europarl.europa.eu/doceo/document/*_*.html",
+          "https://www.europarl.europa.eu/doceo/document/*.html",
+          "https://www.europarl.europa.eu/doceo/*/document/*_*.html",
+          "https://www.europarl.europa.eu/doceo/*/document/*.html"
+        ],
+        "js": ["content-script.js"],
+        "run_at": "document_idle",
+        "all_frames": true
+      }
+    ]
   }
