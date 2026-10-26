@@ -26,6 +26,16 @@ https://github.com/user-attachments/assets/7640db70-7ace-4b90-abe7-8571c1d9ad9b
 
 Want to see how MEPs actually voted? Check out **[check-some-votes.eu](https://check-some-votes.eu)**: roll-call votes and plenary speeches of all MEPs.
 
+## 🧰 Development
+
+The SVG flags in `flags/` are not part of the repository. After cloning, run this once (needs `curl`, `tar` and `openssl`):
+
+```bash
+scripts/fetch-flags.sh
+```
+
+Then load the folder in `chrome://extensions` via **Load unpacked**.
+
 ## 🛠️ Installation
 
 Add the Extension to your Chrome Browser with this Link: 

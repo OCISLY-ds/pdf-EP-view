@@ -21,32 +21,40 @@
       <label for="filterCheckbox" class="filter-label">Download Reports</label>
     </div>
     <div class="language-group">
-      <label for="languageSelect" class="language-label">Output language:</label>
-      <select id="languageSelect" class="language-select">
-        <option value="BG">🇧🇬 Bulgarian</option>
-        <option value="CS">🇨🇿 Czech</option>
-        <option value="DA">🇩🇰 Danish</option>
-        <option value="DE" selected>🇩🇪 German</option>
-        <option value="EL">🇬🇷 Greek</option>
-        <option value="EN">🇬🇧 English</option>
-        <option value="ES">🇪🇸 Spanish</option>
-        <option value="ET">🇪🇪 Estonian</option>
-        <option value="FI">🇫🇮 Finnish</option>
-        <option value="FR">🇫🇷 French</option>
-        <option value="GA">🇮🇪 Irish</option>
-        <option value="HR">🇭🇷 Croatian</option>
-        <option value="HU">🇭🇺 Hungarian</option>
-        <option value="IT">🇮🇹 Italian</option>
-        <option value="LT">🇱🇹 Lithuanian</option>
-        <option value="LV">🇱🇻 Latvian</option>
-        <option value="MT">🇲🇹 Maltese</option>
-        <option value="NL">🇳🇱 Dutch</option>
-        <option value="PL">🇵🇱 Polish</option>
-        <option value="PT">🇵🇹 Portuguese</option>
-        <option value="RO">🇷🇴 Romanian</option>
-        <option value="SK">🇸🇰 Slovak</option>
-        <option value="SL">🇸🇮 Slovenian</option>
-        <option value="SV">🇸🇪 Swedish</option>
+      <span id="languageLabel" class="language-label">Output language:</span>
+      <div class="language-picker">
+        <button type="button" id="languageButton" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="languageLabel languageButton">
+          <img class="flag" id="languageFlag" alt="" width="20" height="15">
+          <span id="languageCode"></span>
+          <span class="caret" aria-hidden="true">&#9662;</span>
+        </button>
+        <ul id="languageList" class="language-list" role="listbox" aria-labelledby="languageLabel" hidden></ul>
+      </div>
+      <select id="languageSelect" hidden>
+        <option value="BG">Bulgarian</option>
+        <option value="CS">Czech</option>
+        <option value="DA">Danish</option>
+        <option value="DE" selected>German</option>
+        <option value="EL">Greek</option>
+        <option value="EN">English</option>
+        <option value="ES">Spanish</option>
+        <option value="ET">Estonian</option>
+        <option value="FI">Finnish</option>
+        <option value="FR">French</option>
+        <option value="GA">Irish</option>
+        <option value="HR">Croatian</option>
+        <option value="HU">Hungarian</option>
+        <option value="IT">Italian</option>
+        <option value="LT">Lithuanian</option>
+        <option value="LV">Latvian</option>
+        <option value="MT">Maltese</option>
+        <option value="NL">Dutch</option>
+        <option value="PL">Polish</option>
+        <option value="PT">Portuguese</option>
+        <option value="RO">Romanian</option>
+        <option value="SK">Slovak</option>
+        <option value="SL">Slovenian</option>
+        <option value="SV">Swedish</option>
       </select>
     </div>
   </div>
@@ -66,7 +74,7 @@
     </div>
   </div>
   <footer style="margin-top: 20px; font-size: 12px; color: rgba(255, 255, 255, 0.9); text-align: center; background: rgba(0, 0, 0, 0.3); padding: 8px 15px; border-radius: 20px; backdrop-filter: blur(10px); position: relative; z-index: 1;">
-    Made with 🧡 in the EU 🇪🇺 &middot;
+    Made with 🧡 in the EU <img class="flag flag-inline" src="flags/eu.svg" alt="EU" width="20" height="15"> &middot;
     <a href="https://check-some-votes.eu" target="_blank" rel="noopener noreferrer" class="footer-link">check-some-votes.eu</a>
   </footer>
   <div class="info-container">

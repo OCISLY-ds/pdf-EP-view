@@ -342,7 +342,7 @@ a div {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   position: relative;
-  z-index: 1;
+  z-index: 20;
   box-sizing: border-box;
 }
 .checkbox-group {
@@ -372,37 +372,97 @@ a div {
   color: #333;
   font-family: 'Montserrat', Arial, sans-serif;
 }
-.language-select {
-  padding: 8px 12px;
+/* Language picker: custom dropdown with SVG flags on top of the hidden #languageSelect.
+   IDs are used on purpose, they beat the generic `button` / `button:hover` rules above. */
+.language-picker {
+  position: relative;
+}
+#languageButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  min-width: 80px;
+  max-width: none;
+  margin: 0;
+  padding: 8px 10px;
   border: 2px solid rgba(242, 170, 60, 0.3);
   border-radius: 5px;
-  background-color: white;
+  background: white;
+  color: #333;
   font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: border-color 0.3s ease;
-  min-width: 80px;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: 'Montserrat', Arial, sans-serif;
   font-weight: 400;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  backdrop-filter: none;
+  transform: none;
+  transition: border-color 0.3s ease;
 }
-.language-select:hover {
+#languageButton:hover,
+#languageButton:focus-visible {
+  background: white;
   border-color: rgb(242, 170, 60);
-}
-.language-select:focus {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: none;
   outline: none;
-  border-color: rgb(242, 170, 60);
+}
+#languageButton:focus-visible {
   box-shadow: 0 0 0 2px rgba(242, 170, 60, 0.2);
 }
-.language-select option {
-  font-size: 16px;
-  padding: 5px 10px;
-  white-space: nowrap;
-  font-family: 'Montserrat', Arial, sans-serif;
-  font-weight: 400;
+#languageButton .caret {
+  margin-left: auto;
+  font-size: 12px;
+  color: #666;
+}
+.language-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 10;
+  width: 190px;
+  max-height: 220px;
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+  list-style: none;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+.language-list[hidden] {
+  display: none;
+}
+.language-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+.language-list li:hover,
+.language-list li:focus-visible {
+  background: rgba(242, 170, 60, 0.25);
+  outline: none;
+}
+.language-list li[aria-selected="true"] {
+  font-weight: 600;
+}
+/* Flags: override the global `img` rule (max-width, auto height, margins) */
+.flag {
+  width: 20px;
+  height: 15px;
+  max-width: none;
+  margin: 0;
+  flex: none;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  object-fit: cover;
+}
+.flag-inline {
+  display: inline-block;
+  vertical-align: -3px;
 }
 .buttons-container {
   display: flex;

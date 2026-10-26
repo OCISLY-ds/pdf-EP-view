@@ -73,36 +73,116 @@ function updateLanguageDisplay() {
     // No need to show it in the result area
 }
 
-function updateLanguageSelectDisplay() {
-    const languageSelect = document.getElementById('languageSelect');
-    const selectedOption = languageSelect.options[languageSelect.selectedIndex];
-    
-    // Store full text in data attribute if not already stored
-    if (!selectedOption.dataset.fullText) {
-        Array.from(languageSelect.options).forEach(option => {
-            option.dataset.fullText = option.text;
-            // Extract ISO code (first 2 characters after emoji)
-            const match = option.text.match(/🇦🇹|🇧🇪|🇧🇬|🇭🇷|🇨🇾|🇨🇿|🇩🇰|🇪🇪|🇫🇮|🇫🇷|🇩🇪|🇬🇷|🇭🇺|🇮🇪|🇮🇹|🇱🇻|🇱🇹|🇱🇺|🇲🇹|🇳🇱|🇵🇱|🇵🇹|🇷🇴|🇸🇰|🇸🇮|🇪🇸|🇸🇪|🇬🇧/);
-            const emoji = match ? match[0] : '';
-            const isoCode = option.value;
-            option.dataset.shortText = `${emoji} ${isoCode}`;
-        });
-    }
-    
-    // Show short version in closed dropdown
-    Array.from(languageSelect.options).forEach(option => {
-        option.text = option.dataset.shortText;
+// ========== LANGUAGE PICKER ==========
+// A native <select> cannot show images, so the visible control is a custom dropdown with SVG flags
+// (flags/*.svg from the npm package country-flag-icons). The hidden <select id="languageSelect">
+// stays the single source of truth: its .value is what the rest of this file reads.
+
+// EP language code -> flag file in flags/ (ISO country code; EN -> GB, GA -> IE, ...)
+const LANGUAGE_FLAGS = {
+    BG: 'bg', CS: 'cz', DA: 'dk', DE: 'de', EL: 'gr', EN: 'gb', ES: 'es', ET: 'ee',
+    FI: 'fi', FR: 'fr', GA: 'ie', HR: 'hr', HU: 'hu', IT: 'it', LT: 'lt', LV: 'lv',
+    MT: 'mt', NL: 'nl', PL: 'pl', PT: 'pt', RO: 'ro', SK: 'sk', SL: 'si', SV: 'se'
+};
+
+function flagUrl(languageCode) {
+    return `flags/${LANGUAGE_FLAGS[languageCode]}.svg`;
+}
+
+function renderLanguageButton() {
+    const code = document.getElementById('languageSelect').value;
+    document.getElementById('languageFlag').src = flagUrl(code);
+    document.getElementById('languageCode').textContent = code;
+}
+
+// The list is built on first open, so the 23 other flags are only loaded when needed.
+function buildLanguageList() {
+    const list = document.getElementById('languageList');
+    if (list.childElementCount) return;
+
+    Array.from(document.getElementById('languageSelect').options).forEach(option => {
+        const item = document.createElement('li');
+        item.setAttribute('role', 'option');
+        item.tabIndex = -1;
+        item.dataset.value = option.value;
+
+        const flag = document.createElement('img');
+        flag.className = 'flag';
+        flag.alt = '';
+        flag.width = 20;
+        flag.height = 15;
+        flag.src = flagUrl(option.value);
+
+        item.append(flag, option.text);
+        list.appendChild(item);
     });
 }
 
-// Show full names when dropdown opens
-function showFullLanguageNames() {
+function openLanguageList() {
+    buildLanguageList();
+    const current = document.getElementById('languageSelect').value;
+    const items = Array.from(document.getElementById('languageList').children);
+    items.forEach(item => item.setAttribute('aria-selected', String(item.dataset.value === current)));
+
+    document.getElementById('languageList').hidden = false;
+    document.getElementById('languageButton').setAttribute('aria-expanded', 'true');
+    (items.find(item => item.dataset.value === current) || items[0]).focus();
+}
+
+function closeLanguageList({ refocus = false } = {}) {
+    document.getElementById('languageList').hidden = true;
+    const button = document.getElementById('languageButton');
+    button.setAttribute('aria-expanded', 'false');
+    if (refocus) button.focus();
+}
+
+function selectLanguage(code) {
     const languageSelect = document.getElementById('languageSelect');
-    Array.from(languageSelect.options).forEach(option => {
-        if (option.dataset.fullText) {
-            option.text = option.dataset.fullText;
+    if (languageSelect.value !== code) {
+        languageSelect.value = code;
+        languageSelect.dispatchEvent(new Event('change'));
+    }
+    closeLanguageList({ refocus: true });
+}
+
+function initLanguagePicker() {
+    const button = document.getElementById('languageButton');
+    const list = document.getElementById('languageList');
+
+    button.addEventListener('click', () => (list.hidden ? openLanguageList() : closeLanguageList()));
+    button.addEventListener('keydown', (e) => {
+        if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && list.hidden) {
+            e.preventDefault();
+            openLanguageList();
         }
     });
+
+    list.addEventListener('click', (e) => {
+        const item = e.target.closest('li');
+        if (item) selectLanguage(item.dataset.value);
+    });
+    list.addEventListener('keydown', (e) => {
+        const items = Array.from(list.children);
+        const index = items.indexOf(document.activeElement);
+        const focusItem = (i) => items[Math.max(0, Math.min(items.length - 1, i))].focus();
+
+        if (e.key === 'ArrowDown') { e.preventDefault(); focusItem(index + 1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); focusItem(index - 1); }
+        else if (e.key === 'Home') { e.preventDefault(); focusItem(0); }
+        else if (e.key === 'End') { e.preventDefault(); focusItem(items.length - 1); }
+        else if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (index >= 0) selectLanguage(items[index].dataset.value);
+        }
+        else if (e.key === 'Escape') { e.preventDefault(); closeLanguageList({ refocus: true }); }
+        else if (e.key === 'Tab') closeLanguageList();
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!list.hidden && !e.target.closest('.language-picker')) closeLanguageList();
+    });
+
+    renderLanguageButton();
 }
 
 function filterPdfLinks(pdfLinks) {
@@ -425,8 +505,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (data.filterCheckboxState !== undefined) {
             filterCheckbox.checked = data.filterCheckboxState;
         }
-        if (data.selectedLanguage !== undefined) {
+        if (LANGUAGE_FLAGS[data.selectedLanguage]) {
             languageSelect.value = data.selectedLanguage;
+            renderLanguageButton();
         }
     });
 
@@ -436,16 +517,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     languageSelect.addEventListener('change', () => {
         chrome.storage.local.set({ selectedLanguage: languageSelect.value });
-        // Language is now visible in the dropdown itself, no need for separate display
-        updateLanguageSelectDisplay();
+        renderLanguageButton();
     });
     
-    // Add event listeners for dropdown behavior
-    languageSelect.addEventListener('focus', showFullLanguageNames);
-    languageSelect.addEventListener('mousedown', showFullLanguageNames);
-    languageSelect.addEventListener('blur', updateLanguageSelectDisplay);
-    languageSelect.addEventListener('change', updateLanguageSelectDisplay);
-
     // Initialize icon click handler
     const icon = document.getElementById('icon');
     if (icon) {
@@ -457,8 +531,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Validate initial URL
     validateUrlInput();
     
-    // Initialize language select display
-    updateLanguageSelectDisplay();
+    // Initialize language picker
+    initLanguagePicker();
 
     // Check for result element
     const resultElement = document.getElementById('result');
