@@ -32,10 +32,22 @@ async function getCurrentTabUrl() {
     });
 }
 
+// Exact host match. A substring check would also accept e.g. europarl.europa.eu.evil.com.
+function isEpUrl(url) {
+    try {
+        const { protocol, hostname } = new URL(url);
+        return protocol === 'https:' &&
+            (hostname === 'europarl.europa.eu' || hostname.endsWith('.europarl.europa.eu'));
+    } catch (e) {
+        return false;
+    }
+}
+
+// Only EP links are allowed through, so a manipulated page cannot make us open or download from other hosts.
 function sanitizeUrl(url) {
     try {
         const parsedUrl = new URL(url);
-        if (parsedUrl.protocol === 'chrome-extension:') {
+        if (!isEpUrl(parsedUrl.href)) {
             return '';
         }
         return parsedUrl.href;
@@ -181,6 +193,9 @@ async function fetchPdfLinksFromUrl(url) {
         const adjustedUrl = adjustUrlLanguage(url);
         
         const response = await fetch(adjustedUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
         const text = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, 'text/html');
@@ -204,12 +219,14 @@ async function fetchPdfLinksFromUrl(url) {
 
 async function processUrlsForAction(urls, action) {
     const resultElement = document.getElementById('result');
-    
-    for (const url of urls) {
+    clearError();
+    resultElement.innerText = `Processing ${urls.length} document(s)...`;
+
+    for (const [index, url] of urls.entries()) {
         try {
             const adjustedUrl = adjustUrlLanguage(url);
             resultElement.innerText += `\nProcessing: ${adjustedUrl}`;
-            await new Promise(r => setTimeout(r, 500));
+            if (index > 0) await new Promise(r => setTimeout(r, 500)); // be gentle with the EP server
 
             const filteredLinks = await fetchPdfLinksFromUrl(url);
             
@@ -242,18 +259,17 @@ async function processUrlsForAction(urls, action) {
             }
         } catch (error) {
             console.error(`Error processing ${url}:`, error);
-            resultElement.innerText += `\nError processing ${url}`;
+            resultElement.innerText += `\nError processing ${url}: ${error.message}`;
         }
     }
 }
 
 async function handleMainUrlAction(url, action) {
     const resultElement = document.getElementById('result');
-    
+    clearError();
+
     try {
-        const parsedUrl = new URL(url);
-        
-        if (!parsedUrl.hostname.includes('europarl.europa.eu')) {
+        if (!isEpUrl(url)) {
             showError('Error: This feature only works for URLs on the www.europarl.europa.eu domain.');
             return;
         }
@@ -275,6 +291,7 @@ async function handleMainUrlAction(url, action) {
 
         if (action === 'open') {
             filteredLinks.forEach(link => chrome.tabs.create({ url: link }));
+            resultElement.innerText = `Opened ${filteredLinks.length} PDF(s).`;
         } else {
             resultElement.innerText = `Found ${filteredLinks.length} PDF(s). Preparing to download...`;
             await new Promise(resolve => setTimeout(resolve, 25));
@@ -293,7 +310,7 @@ async function handleMainUrlAction(url, action) {
         }
     } catch (error) {
         console.error(`Error ${action}ing PDFs:`, error);
-        resultElement.innerText = `Error occurred while ${action}ing PDFs. Check the console for details.`;
+        showError(`Error while ${action}ing PDFs: ${error.message}`);
     }
 }
 
@@ -375,16 +392,7 @@ function validateUrlInput() {
     const urlInput = document.getElementById('urlInput');
     const url = urlInput.value.trim();
 
-    try {
-        const parsedUrl = new URL(url);
-        if (parsedUrl.hostname.includes('europarl.europa.eu')) {
-            urlInput.style.border = '2px solid green';
-        } else {
-            urlInput.style.border = '2px solid red';
-        }
-    } catch (e) {
-        urlInput.style.border = '2px solid red';
-    }
+    urlInput.style.border = isEpUrl(url) ? '2px solid green' : '2px solid red';
 }
 
 // ========== DOM EVENT LISTENERS ==========

@@ -22,6 +22,10 @@ Watch an example usage here:
 
 https://github.com/user-attachments/assets/7640db70-7ace-4b90-abe7-8571c1d9ad9b
 
+## 🗳️ Related
+
+Want to see how MEPs actually voted? Check out **[check-some-votes.eu](https://check-some-votes.eu)**: roll-call votes and plenary speeches of all MEPs.
+
 ## 🛠️ Installation
 
 Add the Extension to your Chrome Browser with this Link: 

@@ -467,12 +467,64 @@
     }, 300);
   }
 
+  // Last resort when the Amendments dropdown cannot be found: toolbar at the top of the main row,
+  // otherwise a floating button (top frame only, to avoid duplicates in sub-frames).
+  function insertFallbackFloatingButton() {
+    if (STATE.inserted) return false;
+    if (window.top !== window) return false;
+
+    const row = findMainContainerRow();
+    if (row && insertToolbarIntoRow(row)) return true;
+
+    if (document.getElementById('ep-amd-toolbar')) {
+      STATE.inserted = true;
+      return true;
+    }
+
+    const wrapper = document.createElement('div');
+    wrapper.id = 'ep-amd-toolbar';
+    wrapper.style.cssText = [
+      'position:fixed',
+      'right:16px',
+      'bottom:16px',
+      'z-index:2147483647',
+      'display:flex',
+      'align-items:center',
+      'gap:8px',
+      'padding:8px',
+      'border-radius:8px',
+      'background:rgba(255,255,255,0.95)',
+      'box-shadow:0 2px 8px rgba(0,0,0,0.25)',
+    ].join(';');
+    wrapper.append(createDownloadButton(), createIncludeReportToggle());
+    document.body.appendChild(wrapper);
+    STATE.inserted = true;
+    return true;
+  }
+
+  // tryInsert() scans the whole DOM, so run it debounced and stop watching after a while
+  // instead of re-running it on every mutation of a page that never gets the button.
   function startObserver() {
+    const DEBOUNCE_MS = 250;
+    const MAX_WATCH_MS = 15000;
+    let timer = null;
+
+    const stop = () => {
+      obs.disconnect();
+      clearTimeout(timer);
+    };
+
     const obs = new MutationObserver(() => {
-      if (!STATE.inserted && tryInsert()) {
-        obs.disconnect();
+      if (STATE.inserted) {
+        stop();
+        return;
       }
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        if (STATE.inserted || tryInsert()) stop();
+      }, DEBOUNCE_MS);
     });
     obs.observe(document.documentElement, { childList: true, subtree: true });
+    setTimeout(stop, MAX_WATCH_MS);
   }
 })();
